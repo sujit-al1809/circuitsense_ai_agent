@@ -158,4 +158,10 @@ describe("Markdown", () => {
     expect(container.querySelector("img")).toBeNull();
     expect(container).toHaveTextContent("<img src=x onerror=alert(1)>");
   });
+
+  it("renders headings without the leading hashes", () => {
+    const { container } = render(<Markdown text={"### Why R1 matters\n\nBody text"} />);
+    expect(container.querySelector("p.font-semibold")).toHaveTextContent("Why R1 matters");
+    expect(container).not.toHaveTextContent("###");
+  });
 });

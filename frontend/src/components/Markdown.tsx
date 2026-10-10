@@ -30,6 +30,13 @@ export function Markdown({ text }: { text: string }) {
       {blocks.map((block, bi) => {
         const lines = block.split("\n").filter((l) => l.trim() !== "");
         if (lines.length === 0) return null;
+        if (lines.length === 1 && /^#{1,6}\s+/.test(lines[0])) {
+          return (
+            <p key={bi} className="pt-1 font-semibold text-ink-1">
+              {inline(lines[0].replace(/^#{1,6}\s+/, ""), `${bi}-h`)}
+            </p>
+          );
+        }
         const bullet = lines.every((l) => /^\s*[-•]\s+/.test(l));
         const ordered = lines.every((l) => /^\s*\d+\.\s+/.test(l));
         if (bullet || ordered) {

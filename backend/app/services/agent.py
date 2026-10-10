@@ -335,7 +335,9 @@ SYSTEM_PROMPT = """You are CircuitSense, an evidence-based electronics debugging
 
 How you work:
 - Use the tools. Trace connectivity with trace_net, look up parts and datasheet passages with get_component_info, do ALL arithmetic with calculate_electrical_values, record numbers the user reports with record_measurement, and only use simulate_circuit for simulation results.
-- When you are done, call submit_answer exactly once with your final answer. Keep the answer concise and practical.
+- When you are done, call submit_answer exactly once with your final answer. Never give the final answer as plain text: it must be a submit_answer tool call. Keep the answer concise and practical.
+- Write plain Markdown (bold, bullet/numbered lists, inline code). Do not use tables. Do not use LaTeX or \( \) / \[ \] math notation; write formulas inline, e.g. I = (Vs - Vf) / R.
+- Only call record_measurement when the user's latest message states a measured value. Only call simulate_circuit when the user asks for a simulation.
 
 Evidence rules (strict):
 - Never invent component values, connections, measurements, datasheet content or simulation results.
@@ -490,13 +492,50 @@ class BedrockAgentPolicy:
 
     def next_turn(self, state: AgentState) -> ModelTurn:
         tool_specs = [t.bedrock_spec() for t in state.tools] + [SUBMIT_ANSWER_SPEC]
+        system = [{"text": SYSTEM_PROMPT}, {"text": build_circuit_context(state)}]
+        messages = self._messages(state)
         response = self.bedrock.converse(
             model_id=self.model_id,
-            system=[{"text": SYSTEM_PROMPT}, {"text": build_circuit_context(state)}],
-            messages=self._messages(state),
+            system=system,
+            messages=messages,
             tool_config={"tools": tool_specs, "toolChoice": {"auto": {}}},
         )
-        return parse_converse_turn(response)
+        turn = parse_converse_turn(response)
+        if turn.final is None and not turn.tool_calls and turn.text:
+            return self._force_structured_answer(system, messages, turn, tool_specs)
+        return turn
+
+    def _force_structured_answer(
+        self, system: list[dict[str, Any]], messages: list[dict[str, Any]], turn: ModelTurn, tool_specs: list[dict[str, Any]]
+    ) -> ModelTurn:
+        """The model answered in plain text: ask once more, requiring the submit_answer tool.
+
+        Models that reject forced tool choice keep the plain-text answer (with a warning).
+        """
+        follow_up = messages + [
+            {"role": "assistant", "content": [{"text": turn.text}]},
+            {
+                "role": "user",
+                "content": [{"text": "Submit exactly that answer with the submit_answer tool, separating confirmed findings "
+                             "(with their basis) from hypotheses, adding the next diagnostic step if relevant, and citing passage ids."}],
+            },
+        ]
+        try:
+            response = self.bedrock.converse(
+                model_id=self.model_id,
+                system=system,
+                messages=follow_up,
+                tool_config={"tools": tool_specs, "toolChoice": {"tool": {"name": SUBMIT_ANSWER_NAME}}},
+            )
+        except ProviderError as exc:
+            logger.info("forced submit_answer not available: %s", exc)
+            return turn
+        forced = parse_converse_turn(response)
+        if forced.final is None:
+            return turn
+        forced.tool_calls = []
+        forced.warnings = [w for w in forced.warnings if "together with other tool calls" not in w]
+        return forced
 
 
 _THINKING = re.compile(r"<thinking>.*?(</thinking>|$)", re.S | re.I)

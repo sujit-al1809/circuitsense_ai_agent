@@ -291,3 +291,33 @@ def test_temperature_sent_only_when_configured():
     services = build_services(settings, bedrock=BedrockService(settings, runtime_client=runtime))
     services.orchestrator.run(services.analysis.load_sample("led_basic"), "hi", None)
     assert runtime.requests[0]["inferenceConfig"]["temperature"] == 0
+
+
+def test_plain_text_answer_is_converted_with_forced_submit_answer():
+    runtime = FakeRuntime([
+        {"output": {"message": {"content": [{"text": "R1 limits the LED current to 9.09 mA."}]}}, "stopReason": "end_turn"},
+        tool_use("submit_answer", {"answer": "R1 limits the LED current to 9.09 mA.",
+                                   "confirmed_findings": [{"statement": "I = 9.09 mA", "basis": "calculation"}]}),
+    ])
+    settings = make_settings(**BEDROCK)
+    services = build_services(settings, bedrock=BedrockService(settings, runtime_client=runtime))
+    r = services.orchestrator.run(services.analysis.load_sample("led_basic"), "Why R1?", None)
+    assert r.answer.startswith("R1 limits") and r.iterations == 1
+    assert r.confirmed and r.confirmed[0].basis == "calculation"
+    assert not any("structured answer format" in w for w in r.warnings)
+    forced = runtime.requests[1]
+    assert forced["toolConfig"]["toolChoice"] == {"tool": {"name": "submit_answer"}}
+    assert forced["messages"][-2] == {"role": "assistant", "content": [{"text": "R1 limits the LED current to 9.09 mA."}]}
+
+
+def test_plain_text_answer_kept_when_forced_tool_choice_is_rejected():
+    err = ClientError({"Error": {"Code": "ValidationException", "Message": "tool_choice not supported"}}, "Converse")
+    runtime = FakeRuntime([
+        {"output": {"message": {"content": [{"text": "Plain answer."}]}}, "stopReason": "end_turn"},
+        err,
+    ])
+    settings = make_settings(**BEDROCK)
+    services = build_services(settings, bedrock=BedrockService(settings, runtime_client=runtime))
+    r = services.orchestrator.run(services.analysis.load_sample("led_basic"), "hi", None)
+    assert r.answer == "Plain answer." and r.stopped_reason == "final"
+    assert any("structured answer format" in w for w in r.warnings)
