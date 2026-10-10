@@ -1,0 +1,20 @@
+{
+  "id": "resistor_divider",
+  "name": "Resistor divider (12 V → 3.84 V)",
+  "description": "A 10 kΩ / 4.7 kΩ divider derives a lower voltage from a 12 V input and brings it out on connector J1.",
+  "netlist": "resistor_divider.net",
+  "schematic": "schematic.png",
+  "expected_behavior": "Unloaded, VOUT = 12 V × 4.7k / (10k + 4.7k) ≈ 3.84 V and about 816 µA flows through the divider.",
+  "example_questions": [
+    "Explain this circuit.",
+    "What is the output voltage?",
+    "Why might my output voltage be low?",
+    "What should I measure next?",
+    "Trace VOUT."
+  ],
+  "test_questions": [
+    {"question": "What is the output voltage?", "expected_contains": ["3.84 V"], "expected_tools": ["calculate_electrical_values"]},
+    {"question": "Why might my output voltage be low?", "expected_contains": ["VIN"], "expected_tools": []},
+    {"question": "Trace VOUT.", "expected_contains": ["R1", "R2", "J1"], "expected_tools": ["trace_net"]}
+  ]
+}

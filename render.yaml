@@ -1,0 +1,23 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# One web service runs the API and serves the built React UI from the same URL.
+services:
+  - type: web
+    name: circuitsense
+    runtime: docker
+    plan: free            # free instances sleep when idle; in-memory sessions reset on wake
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PROVIDER_MODE
+        value: bedrock
+      - key: AWS_REGION
+        value: us-east-1
+      - key: BEDROCK_TEXT_MODEL_ID
+        value: us.amazon.nova-2-lite-v1:0
+      - key: BEDROCK_VISION_MODEL_ID
+        value: us.amazon.nova-pro-v1:0
+      - key: BEDROCK_TEMPERATURE
+        value: "0"
+      - key: AWS_BEARER_TOKEN_BEDROCK
+        sync: false       # entered in the Render dashboard, never committed

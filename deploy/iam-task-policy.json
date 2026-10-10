@@ -1,0 +1,33 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "InvokeOnlyTheConfiguredModels",
+      "Effect": "Allow",
+      "Action": ["bedrock:InvokeModel"],
+      "Resource": [
+        "arn:aws:bedrock:REGION:ACCOUNT_ID:inference-profile/TEXT_INFERENCE_PROFILE_ID",
+        "arn:aws:bedrock:REGION:ACCOUNT_ID:inference-profile/VISION_INFERENCE_PROFILE_ID",
+        "arn:aws:bedrock:*::foundation-model/TEXT_FOUNDATION_MODEL_ID",
+        "arn:aws:bedrock:*::foundation-model/VISION_FOUNDATION_MODEL_ID"
+      ]
+    },
+    {
+      "Sid": "ReadModelMetadataForStatusChecks",
+      "Effect": "Allow",
+      "Action": ["bedrock:GetFoundationModel", "bedrock:GetInferenceProfile"],
+      "Resource": [
+        "arn:aws:bedrock:REGION:ACCOUNT_ID:inference-profile/TEXT_INFERENCE_PROFILE_ID",
+        "arn:aws:bedrock:REGION:ACCOUNT_ID:inference-profile/VISION_INFERENCE_PROFILE_ID",
+        "arn:aws:bedrock:*::foundation-model/TEXT_FOUNDATION_MODEL_ID",
+        "arn:aws:bedrock:*::foundation-model/VISION_FOUNDATION_MODEL_ID"
+      ]
+    },
+    {
+      "Sid": "OptionalUploadArchive",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": "arn:aws:s3:::BUCKET_NAME/circuitsense/uploads/*"
+    }
+  ]
+}

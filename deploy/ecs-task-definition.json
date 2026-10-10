@@ -1,0 +1,41 @@
+{
+  "family": "circuitsense",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "512",
+  "memory": "1024",
+  "runtimePlatform": { "cpuArchitecture": "X86_64", "operatingSystemFamily": "LINUX" },
+  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/circuitsense-execution-role",
+  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/circuitsense-task-role",
+  "containerDefinitions": [
+    {
+      "name": "circuitsense",
+      "image": "ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/circuitsense:IMAGE_TAG",
+      "essential": true,
+      "portMappings": [{ "containerPort": 8000, "protocol": "tcp" }],
+      "environment": [
+        { "name": "PROVIDER_MODE", "value": "bedrock" },
+        { "name": "AWS_REGION", "value": "REGION" },
+        { "name": "BEDROCK_TEXT_MODEL_ID", "value": "TEXT_MODEL_OR_PROFILE_ID" },
+        { "name": "BEDROCK_VISION_MODEL_ID", "value": "VISION_MODEL_OR_PROFILE_ID" },
+        { "name": "MAX_UPLOAD_MB", "value": "10" },
+        { "name": "S3_BUCKET", "value": "" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/circuitsense",
+          "awslogs-region": "REGION",
+          "awslogs-stream-prefix": "app"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)\""],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 20
+      }
+    }
+  ]
+}

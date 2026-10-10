@@ -1,0 +1,22 @@
+{
+  "id": "led_basic",
+  "name": "LED indicator (5 V, 330 Ω, red LED)",
+  "description": "A DC supply drives a red indicator LED through a current-limiting resistor. The simplest complete circuit and the primary, fully tested reference.",
+  "netlist": "led_basic.net",
+  "schematic": "schematic.png",
+  "schematic_pdf": "schematic.pdf",
+  "expected_behavior": "About 9.09 mA flows through R1 and D1 (assuming a 2.0 V LED forward voltage); R1 drops about 3 V and dissipates about 27.3 mW; VCC = 5 V and LED_A ≈ 2.0 V relative to GND.",
+  "example_questions": [
+    "Explain this circuit.",
+    "What is the purpose of R1?",
+    "Calculate current through the LED.",
+    "Why might the LED be dim?",
+    "What should I measure next?"
+  ],
+  "test_questions": [
+    {"question": "Calculate current through the LED.", "expected_contains": ["9.09 mA"], "expected_tools": ["calculate_electrical_values"]},
+    {"question": "What is the purpose of R1?", "expected_contains": ["current-limiting"], "expected_tools": ["get_component_info", "trace_net"]},
+    {"question": "Trace D1.", "expected_contains": ["LED_A", "GND"], "expected_tools": ["trace_net"]},
+    {"question": "What should I measure next?", "expected_contains": ["VCC"], "expected_tools": []}
+  ]
+}

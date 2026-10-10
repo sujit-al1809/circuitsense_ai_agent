@@ -1,0 +1,20 @@
+{
+  "id": "noninverting_amp",
+  "name": "Non-inverting amplifier (gain 11)",
+  "description": "A generic op-amp on ±12 V rails amplifies a 0.1 V DC input with a gain of 1 + 10k/1k = 11 into a 10 kΩ load.",
+  "netlist": "noninverting_amp.net",
+  "schematic": "schematic.png",
+  "expected_behavior": "Gain = 1 + R2/R1 = 11, so VOUT ≈ 1.1 V for VIN = 0.1 V; FB ≈ VIN = 0.1 V by negative feedback.",
+  "example_questions": [
+    "Explain this circuit.",
+    "Trace the feedback path.",
+    "What is the gain?",
+    "Find the role of R1.",
+    "Investigate low output voltage."
+  ],
+  "test_questions": [
+    {"question": "What is the gain?", "expected_contains": ["11"], "expected_tools": ["calculate_electrical_values"]},
+    {"question": "Trace the feedback path.", "expected_contains": ["U1.6 (OUT)", "R2", "U1.2 (IN-)"], "expected_tools": ["trace_net"]},
+    {"question": "Find the role of R1.", "expected_contains": ["gain-setting"], "expected_tools": ["get_component_info", "trace_net"]}
+  ]
+}

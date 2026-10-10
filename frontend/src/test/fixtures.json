@@ -1,0 +1,511 @@
+{
+ "health": {
+  "status": "ok",
+  "app": "CircuitSense",
+  "version": "0.1.0",
+  "provider": {
+   "mode": "demo",
+   "label": "Demo mode (deterministic, no AI model)",
+   "configured": true,
+   "region": null,
+   "text_model_id": null,
+   "vision_model_id": null,
+   "issues": [],
+   "notes": []
+  },
+  "simulation_available": false,
+  "datasheet_documents": 6,
+  "sample_circuits": 3,
+  "storage": "in-memory"
+ },
+ "samples": [
+  {
+   "id": "led_basic",
+   "name": "LED indicator (5 V, 330 Ω, red LED)",
+   "description": "A DC supply drives a red indicator LED through a current-limiting resistor. The simplest complete circuit and the primary, fully tested reference.",
+   "circuit_type": "led_indicator",
+   "example_questions": [
+    "Explain this circuit.",
+    "What is the purpose of R1?",
+    "Calculate current through the LED.",
+    "Why might the LED be dim?",
+    "What should I measure next?"
+   ]
+  },
+  {
+   "id": "noninverting_amp",
+   "name": "Non-inverting amplifier (gain 11)",
+   "description": "A generic op-amp on ±12 V rails amplifies a 0.1 V DC input with a gain of 1 + 10k/1k = 11 into a 10 kΩ load.",
+   "circuit_type": "non_inverting_amplifier",
+   "example_questions": [
+    "Explain this circuit.",
+    "Trace the feedback path.",
+    "What is the gain?",
+    "Find the role of R1.",
+    "Investigate low output voltage."
+   ]
+  },
+  {
+   "id": "resistor_divider",
+   "name": "Resistor divider (12 V → 3.84 V)",
+   "description": "A 10 kΩ / 4.7 kΩ divider derives a lower voltage from a 12 V input and brings it out on connector J1.",
+   "circuit_type": "resistor_divider",
+   "example_questions": [
+    "Explain this circuit.",
+    "What is the output voltage?",
+    "Why might my output voltage be low?",
+    "What should I measure next?",
+    "Trace VOUT."
+   ]
+  }
+ ],
+ "session": {
+  "analysis": {
+   "circuit_id": "cir_3f6822ac44814c87",
+   "created_at": "2026-10-10T05:18:36.358686Z",
+   "mode": "demo",
+   "source_kind": "sample",
+   "source_filename": "schematic.png",
+   "sample_id": "led_basic",
+   "title": "LED indicator (5 V, 330 Ω, red LED)",
+   "circuit_type": "led_indicator",
+   "summary": "V1 (5V) drives D1 (Red LED) through the series resistor R1 (330). The resistor limits the LED current to a safe value.",
+   "expected_behavior": "About 9.09 mA flows through R1 and D1 (assuming a 2.0 V LED forward voltage); R1 drops about 3 V and dissipates about 27.3 mW; VCC = 5 V and LED_A ≈ 2.0 V relative to GND.",
+   "components": [
+    {
+     "ref": "V1",
+     "type": "voltage_source",
+     "value": "5V",
+     "part_number": null,
+     "description": "DC voltage source",
+     "confidence": 1.0,
+     "provenance": "parsed_netlist",
+     "pins": [
+      {
+       "pin": "1",
+       "name": "+",
+       "net": "VCC"
+      },
+      {
+       "pin": "2",
+       "name": "-",
+       "net": "GND"
+      }
+     ],
+     "bbox": {
+      "x": 0.1142,
+      "y": 0.435,
+      "width": 0.1458,
+      "height": 0.155,
+      "page": 1,
+      "source": "sample_annotation"
+     }
+    },
+    {
+     "ref": "R1",
+     "type": "resistor",
+     "value": "330",
+     "part_number": null,
+     "description": "Resistor, carbon film, 5%",
+     "confidence": 1.0,
+     "provenance": "parsed_netlist",
+     "pins": [
+      {
+       "pin": "1",
+       "name": null,
+       "net": "VCC"
+      },
+      {
+       "pin": "2",
+       "name": null,
+       "net": "LED_A"
+      }
+     ],
+     "bbox": {
+      "x": 0.3867,
+      "y": 0.1575,
+      "width": 0.0933,
+      "height": 0.1625,
+      "page": 1,
+      "source": "sample_annotation"
+     }
+    },
+    {
+     "ref": "D1",
+     "type": "led",
+     "value": "Red LED",
+     "part_number": null,
+     "description": "Indicator LED, 5 mm, red",
+     "confidence": 1.0,
+     "provenance": "parsed_netlist",
+     "pins": [
+      {
+       "pin": "1",
+       "name": "K",
+       "net": "GND"
+      },
+      {
+       "pin": "2",
+       "name": "A",
+       "net": "LED_A"
+      }
+     ],
+     "bbox": {
+      "x": 0.67,
+      "y": 0.4475,
+      "width": 0.2008,
+      "height": 0.1,
+      "page": 1,
+      "source": "sample_annotation"
+     }
+    }
+   ],
+   "nets": [
+    {
+     "name": "VCC",
+     "nodes": [
+      {
+       "ref": "V1",
+       "pin": "1",
+       "pin_name": "+"
+      },
+      {
+       "ref": "R1",
+       "pin": "1",
+       "pin_name": null
+      }
+     ],
+     "verification": "verified",
+     "provenance": "parsed_netlist",
+     "confidence": 1.0
+    },
+    {
+     "name": "LED_A",
+     "nodes": [
+      {
+       "ref": "R1",
+       "pin": "2",
+       "pin_name": null
+      },
+      {
+       "ref": "D1",
+       "pin": "2",
+       "pin_name": "A"
+      }
+     ],
+     "verification": "verified",
+     "provenance": "parsed_netlist",
+     "confidence": 1.0
+    },
+    {
+     "name": "GND",
+     "nodes": [
+      {
+       "ref": "D1",
+       "pin": "1",
+       "pin_name": "K"
+      },
+      {
+       "ref": "V1",
+       "pin": "2",
+       "pin_name": "-"
+      }
+     ],
+     "verification": "verified",
+     "provenance": "parsed_netlist",
+     "confidence": 1.0
+    }
+   ],
+   "connectivity_status": "verified",
+   "provenance": [
+    "parsed_netlist",
+    "sample_annotation",
+    "calculation"
+   ],
+   "uncertainties": [
+    {
+     "topic": "LED forward voltage",
+     "detail": "LED forward voltage assumed 2 V (generic_red_led.md (illustrative reference, typical Vf)); measure the real Vf."
+    },
+    {
+     "topic": "Tolerances and ratings",
+     "detail": "Resistor tolerance and power ratings are not specified in the netlist; marked values are assumed exact."
+    }
+   ],
+   "issues": [],
+   "calculations": [
+    {
+     "calculation": "led_series_resistor",
+     "formula": "I = (Vs − Vf) / R",
+     "inputs": {
+      "supply_voltage": {
+       "value": 5.0,
+       "unit": "V",
+       "display": "5 V"
+      },
+      "forward_voltage": {
+       "value": 2.0,
+       "unit": "V",
+       "display": "2 V"
+      },
+      "resistance": {
+       "value": 330.0,
+       "unit": "Ω",
+       "display": "330 Ω"
+      }
+     },
+     "outputs": {
+      "current": {
+       "value": 0.00909090909090909,
+       "unit": "A",
+       "display": "9.09 mA"
+      },
+      "resistor_voltage": {
+       "value": 3.0,
+       "unit": "V",
+       "display": "3 V"
+      },
+      "resistor_power": {
+       "value": 0.02727272727272727,
+       "unit": "W",
+       "display": "27.3 mW"
+      },
+      "led_power": {
+       "value": 0.01818181818181818,
+       "unit": "W",
+       "display": "18.2 mW"
+      }
+     },
+     "assumptions": [
+      "LED forward voltage treated as constant at the stated Vf (real Vf varies with current, colour and temperature).",
+      "Ideal supply with no internal resistance.",
+      "Vf = 2 V from generic_red_led.md (illustrative reference, typical Vf)."
+     ],
+     "steps": [
+      "V_R = 5 V − 2 V = 3 V",
+      "I = 3 V / 330 Ω = 9.09 mA",
+      "P_R = I² × R = 27.3 mW",
+      "P_LED = Vf × I = 18.2 mW"
+     ],
+     "warnings": [],
+     "provenance": "calculation"
+    }
+   ],
+   "component_roles": {
+    "V1": "DC supply (5V) for the LED branch",
+    "R1": "current-limiting resistor for D1: it drops the difference between the supply and the LED forward voltage, which sets the LED current",
+    "D1": "indicator LED, driven from V1 through R1"
+   },
+   "next_action": {
+    "action": "Measure the DC voltage on net VCC with respect to GND (circuit powered).",
+    "reason": "Confirms that V1 is actually delivering its rated voltage under load. If the supply is wrong, every downstream reading is wrong too, so this rules out the cheapest explanation first.",
+    "target": "VCC",
+    "expected": "≈ 5 V",
+    "safety_note": "Low-voltage DC circuit, but still keep probes off adjacent pins to avoid accidental shorts, and remove power before any resistance measurement."
+   },
+   "preview": {
+    "url": "/api/circuits/cir_3f6822ac44814c87/preview",
+    "width": 1200,
+    "height": 800,
+    "page": 1,
+    "page_count": 1
+   },
+   "notices": [
+    "Demo mode: no AI model is called. Answers come from CircuitSense's deterministic, rule-based agent and its tools (netlist parsing, graph tracing, calculations, local datasheet search).",
+    "Bundled sample 'LED indicator (5 V, 330 Ω, red LED)': hand-authored reference netlist (verified connectivity) and exact component locations from the drawing generator."
+   ]
+  },
+  "messages": [],
+  "measurements": []
+ },
+ "traceR1": {
+  "target": "R1",
+  "kind": "component",
+  "verified": true,
+  "provenance": "parsed_netlist",
+  "nets": [
+   {
+    "net": "VCC",
+    "via_pin": "1",
+    "via_pin_name": null,
+    "connections": [
+     {
+      "ref": "V1",
+      "pin": "1",
+      "pin_name": "+",
+      "component_type": "voltage_source",
+      "value": "5V"
+     }
+    ]
+   },
+   {
+    "net": "LED_A",
+    "via_pin": "2",
+    "via_pin_name": null,
+    "connections": [
+     {
+      "ref": "D1",
+      "pin": "2",
+      "pin_name": "A",
+      "component_type": "led",
+      "value": "Red LED"
+     }
+    ]
+   }
+  ],
+  "path": null,
+  "path_description": null,
+  "uncertainty": null,
+  "inferred_hint": []
+ },
+ "chatFocus": {
+  "message_id": "msg_92cb1b47eac7",
+  "circuit_id": "cir_3f6822ac44814c87",
+  "created_at": "2026-10-10T05:18:36.381672Z",
+  "mode": "demo",
+  "answer": "**R1** — resistor, marked **330**\n\n**Role:** current-limiting resistor for D1: it drops the difference between the supply and the LED forward voltage, which sets the LED current.\n\n**Connections:**\n- **VCC** via pin 1 → V1.1 (+) [5V]\n- **LED_A** via pin 2 → D1.2 (A) [Red LED]\n\nWithout R1, the LED would be connected straight across the supply and the current would be limited only by the supply's internal resistance — typically enough to destroy the LED. With it, the current is about **9.09 mA** (assuming Vf = 2.0 V).\n\nFrom _Generic through-hole film resistor (illustrative reference)_, section “Overview”: A resistor converts current into a proportional voltage (Ohm's law, V = I × R). In circuits it is used to limit current, divide voltages, bias active devices and set amplifier gain.\n\n_Demo mode: deterministic rule-based response composed from CircuitSense tools — no AI model was called._",
+  "confirmed": [
+   {
+    "statement": "R1: current-limiting resistor for D1: it drops the difference between the supply and the LED forward voltage, which sets the LED current",
+    "basis": "parsed_netlist",
+    "detail": "Role derived by rule from the verified netlist topology."
+   },
+   {
+    "statement": "Estimated LED current 9.09 mA",
+    "basis": "calculation",
+    "detail": "I = (Vs − Vf) / R"
+   }
+  ],
+  "hypotheses": [],
+  "next_step": null,
+  "follow_up_questions": [
+   "What should I measure to check R1?",
+   "Show the datasheet limits for R1."
+  ],
+  "citations": [
+   {
+    "id": "ds-48d51f7f4a",
+    "source": "generic_film_resistor.md",
+    "title": "Generic through-hole film resistor (illustrative reference)",
+    "page": null,
+    "section": "Overview",
+    "excerpt": "A resistor converts current into a proportional voltage (Ohm's law, V = I × R). In circuits it is used\nto limit current, divide voltages, bias active devices and set amplifier gain.",
+    "illustrative": true,
+    "score": 6.511
+   },
+   {
+    "id": "ds-7e7a7be4ff",
+    "source": "generic_signal_diode_illustrative.pdf",
+    "title": "Generic small-signal diode (illustrative)",
+    "page": 2,
+    "section": "Electrical characteristics (typical, illustrative)",
+    "excerpt": "Electrical characteristics (typical, illustrative)\n3. Electrical characteristics\nForward voltage: about 0.6 V to 0.7 V at 1 mA, rising to about 1 V at 100 mA (illustrative).\nMaximum continuous forward current: 150 mA (illustrative).\nMaximum repetitive reverse voltage: 75 V (illustrative).\nReverse leakage current: a few nanoamps at 25 °C, increasing strongly with temperature.\n4. Troubleshooting\nDiode test on a multimeter (power removed): about 0.5 V to 0.7 V forward, open-circuit (OL) in reverse.\nA reading near 0 V in both directions indicates a shorted diode; OL in both directions indicates an open\ndiode.",
+    "illustrative": true,
+    "score": 2.762
+   }
+  ],
+  "calculations": [],
+  "measurements_recorded": [],
+  "tool_calls": [
+   {
+    "name": "get_component_info",
+    "input": {
+     "ref": "R1",
+     "max_passages": 2
+    },
+    "status": "ok",
+    "summary": "R1 (resistor, 330); 2 datasheet passage(s)",
+    "duration_ms": 0.13
+   },
+   {
+    "name": "trace_net",
+    "input": {
+     "target": "R1"
+    },
+    "status": "ok",
+    "summary": "R1: VCC → V1.1; LED_A → D1.2",
+    "duration_ms": 0.06
+   }
+  ],
+  "iterations": 2,
+  "stopped_reason": "final",
+  "focus_component": "R1",
+  "warnings": [],
+  "notice": "Demo mode — deterministic rule-based answer, not AI model output."
+ },
+ "chatDebug": {
+  "message_id": "msg_01a3628cc89e",
+  "circuit_id": "cir_3f6822ac44814c87",
+  "created_at": "2026-10-10T05:18:36.381672Z",
+  "mode": "demo",
+  "answer": "**Expected behaviour:** With a 5 V supply and an assumed 2 V LED forward voltage, about 9.09 mA flows through R1 and D1; the LED should be lit. R1 drops about 3 V and dissipates 27.3 mW.\n\n**Possible causes (hypotheses, not yet confirmed):**\n1. D1 is reversed or open (no current flows).\n2. R1 is a higher value than marked or open, starving the LED of current.\n3. The supply V1 is low or disconnected.\n\n**Most useful next check:** Measure the DC voltage on net VCC with respect to GND (circuit powered). Expect ≈ 5 V.\n\n_Why this first:_ Confirms that V1 is actually delivering its rated voltage under load. If the supply is wrong, every downstream reading is wrong too, so this rules out the cheapest explanation first.\n\nReference note — _Generic 5 mm red indicator LED (illustrative reference)_, “Troubleshooting”: LED dark, about 0 V across it: no current — check the supply, an open resistor, or a broken joint. LED dark, close to the full supply across it: the LED is open or inserted backwards.\n\nTell me what you measure (e.g. “I measured 4.2 V at VOUT”) and I'll compare it with the expected value.\n\n_Demo mode: deterministic rule-based response composed from CircuitSense tools — no AI model was called._",
+  "confirmed": [],
+  "hypotheses": [
+   {
+    "statement": "D1 is reversed or open (no current flows).",
+    "basis": "calculation",
+    "detail": null
+   },
+   {
+    "statement": "R1 is a higher value than marked or open, starving the LED of current.",
+    "basis": "calculation",
+    "detail": null
+   },
+   {
+    "statement": "The supply V1 is low or disconnected.",
+    "basis": "calculation",
+    "detail": null
+   }
+  ],
+  "next_step": {
+   "action": "Measure the DC voltage on net VCC with respect to GND (circuit powered).",
+   "reason": "Confirms that V1 is actually delivering its rated voltage under load. If the supply is wrong, every downstream reading is wrong too, so this rules out the cheapest explanation first.",
+   "target": "VCC",
+   "expected": "≈ 5 V",
+   "safety_note": "Low-voltage DC circuit, but still keep probes off adjacent pins to avoid accidental shorts, and remove power before any resistance measurement."
+  },
+  "follow_up_questions": [],
+  "citations": [
+   {
+    "id": "ds-430f0b0689",
+    "source": "generic_red_led.md",
+    "title": "Generic 5 mm red indicator LED (illustrative reference)",
+    "page": null,
+    "section": "Troubleshooting",
+    "excerpt": "- LED dark, about 0 V across it: no current — check the supply, an open resistor, or a broken joint.\n- LED dark, close to the full supply across it: the LED is open or inserted backwards.\n- LED dim: current too low — resistor value too high, supply sagging, or an LED with a higher Vf (blue/white).\n- Multimeter diode test (power removed): many red LEDs glow faintly and read about 1.6 V to 1.9 V forward.",
+    "illustrative": true,
+    "score": 7.192
+   },
+   {
+    "id": "ds-665fb21da4",
+    "source": "generic_red_led.md",
+    "title": "Generic 5 mm red indicator LED (illustrative reference)",
+    "page": null,
+    "section": null,
+    "excerpt": "> ILLUSTRATIVE TEACHING DATA — not a manufacturer datasheet. The figures below are rounded,\n> typical values for a generic 5 mm red indicator LED, provided so CircuitSense can demonstrate\n> datasheet retrieval. Always check the datasheet of the exact LED you are using.",
+    "illustrative": true,
+    "score": 4.148
+   }
+  ],
+  "calculations": [],
+  "measurements_recorded": [],
+  "tool_calls": [
+   {
+    "name": "get_component_info",
+    "input": {
+     "ref": "D1",
+     "query": "troubleshooting What should I measure next?",
+     "max_passages": 2
+    },
+    "status": "ok",
+    "summary": "D1 (led, Red LED); 2 datasheet passage(s)",
+    "duration_ms": 0.09
+   }
+  ],
+  "iterations": 2,
+  "stopped_reason": "final",
+  "focus_component": null,
+  "warnings": [],
+  "notice": "Demo mode — deterministic rule-based answer, not AI model output."
+ }
+}

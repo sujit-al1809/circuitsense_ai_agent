@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": null,
+  "buildCommand": "cd frontend && npm ci && npm run build && rm -rf ../public && cp -r dist ../public",
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{frontend/**,docs/**,backend/tests/**,backend/.venv/**,**/node_modules/**,**/__pycache__/**,data/sample_circuits/**/schematic.pdf}",
+      "includeFiles": "public/**"
+    }
+  }
+}
